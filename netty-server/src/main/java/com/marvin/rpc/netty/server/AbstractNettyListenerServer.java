@@ -1,7 +1,7 @@
 package com.marvin.rpc.netty.server;
 
 import com.marvin.rpc.base.BasicServer;
-import com.marvin.rpc.base.IServer;
+import com.marvin.rpc.netty.handler.MessageDecoder;
 import com.marvin.rpc.thread.ThreadNames;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -13,10 +13,12 @@ import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *
+ */
 public class AbstractNettyListenerServer extends BasicServer {
     private final static Logger LOGGER = LoggerFactory.getLogger(AbstractNettyListenerServer.class);
 
@@ -92,8 +94,8 @@ public class AbstractNettyListenerServer extends BasicServer {
     }
 
     protected void initPipeline(ChannelPipeline pipeline){
-        pipeline.addLast(new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
-//                .addLast(new ChannelManagerHandler());
+        pipeline.addLast(new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS))
+                .addLast(new MessageDecoder());
     }
 
     /**
